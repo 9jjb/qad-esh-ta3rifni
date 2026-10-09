@@ -1,5 +1,3 @@
-# qad-esh-ta3rifni
-اختبار ممتع: قد إيش تعرفني؟ 🧸❤️
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
