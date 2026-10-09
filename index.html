@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار: قد إيش تعرفني؟ 🧸❤️</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 { color: #d63384; font-size: 24px; margin-bottom: 10px; }
+        p { color: #555; line-height: 1.6; }
+        .btn {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #b02a6b; }
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            color: #333;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            text-align: right;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .option-btn:hover { border-color: #d63384; background: #fff0f5; }
+        .hidden { display: none; }
+        .score { font-size: 48px; color: #d63384; font-weight: bold; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="start-screen">
+        <h1>اختبار: قد إيش تعرفني؟ 🧸❤️</h1>
+        <p>مرحباً بك! تعال اختبر معرفتك بي وشوف كم تجيب من 5 🎯</p>
+        <button class="btn" onclick="startQuiz()">ابدأ الاختبار الآن 🚀</button>
+    </div>
+
+    <div class="card hidden" id="quiz-screen">
+        <h2 id="question-text" style="color: #333; font-size: 18px;"></h2>
+        <div id="options-container"></div>
+    </div>
+
+    <div class="card hidden" id="result-screen">
+        <h1>نتيجة الاختبار ✨</h1>
+        <div class="score" id="final-score">0 / 5</div>
+        <p id="result-message"></p>
+        <button class="btn" onclick="location.reload()">إعادة الاختبار 🔄</button>
+    </div>
+
+    <script>
+        // يمكنك تعديل الأسئلة والخيارات والإجابة الصحيحة من هنا
+        // رقم الإجابة الصحيحة (correct) يبدأ من 0 للخيار الأول، 1 للثاني، وهكذا.
+        const questions = [
+            {
+                question: "1. وش أكلتي المفضلة؟ 🍕",
+                options: ["بيتزا", "شاورما", "برجر", "كبسة"],
+                correct: 1
+            },
+            {
+                question: "2. وش أكثر شيء يسعدني؟ ☕",
+                options: ["القهوة والروقان", "النوم الطويل", "الطلعات والسفر", "الألعاب"],
+                correct: 0
+            },
+            {
+                question: "3. هل أنا شخص نهار ولا ليل؟ 🌙☀️",
+                options: ["كائن ليلي 🌙", "شخص صباحي ☀️"],
+                correct: 0
+            },
+            {
+                question: "4. وش المشروب المفضل عندي؟ 🥤",
+                options: ["شاي عدني", "قهوة باريستا", "عصير طازج", "مشروب غازي"],
+                correct: 0
+            },
+            {
+                question: "5. إذا زعلت وش أكثر شيء يرضيني؟ 🧸",
+                options: ["كلمة حلوة", "أكلة أحبها", "تخليني براحتي شوي", "سؤال عني"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').innerText = q.question;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectOption(index) {
+            if (index === questions[currentQuestion].correct) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+
+            let msg = "";
+            if (score === 5) msg = "أنت توأم روحي وتعرفني صح! ❤️🧸";
+            else if (score >= 3) msg = "ما شاء الله، تعرف عني أشياء كثيرة! 👏";
+            else msg = "يحتاج تقعد معي أكثر وتتعرف علي أكثر! 😂";
+
+            document.getElementById('result-message').innerText = msg;
+        }
+    </script>
+</body>
+</html>
